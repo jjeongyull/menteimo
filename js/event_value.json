@@ -1,0 +1,19 @@
+{
+    "cmd": "event_value",
+    "e_idx": "22",
+    "customer_name": "국민은행 중소기업고객부",
+    "event_title" : "이벤트 제목입니다(테스트)",
+    "name": "박박박",
+    "phone": "010151005150",
+    "email": "dfdskj@naver.com",
+    "shotImg": [
+      "C:\\fakepath\\blog.png",
+      "C:\\fakepath\\blog.png"
+    ],
+    "quizValue": [
+      "주관식 1번 정답",
+      "혹여 잘못 올린 파일이 있다면 해당 파일만 따로 삭제할 수 있어야 한다.",
+      "문제 3번 정답",
+      "C:fakepathinstar.png"
+    ]
+  }

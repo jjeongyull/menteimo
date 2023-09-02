@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+     <!-- 반응형 적용을 위한 설정-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="멘테이모-sns로그인">
+ 
+     <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+     <meta content="telephone=no" name="format-detection">
+ 
+     <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+     <meta name="apple-mobile-web-app-title" content="멘테이모-sns로그인">
+     <link rel="apple-touch-icon" href="#">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+     <link rel="apple-touch-startup-image" href="#">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     
+     <!-- https://ogp.me/ 참고 -->
+     <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+     <meta property="og:title" content="멘테이모-sns로그인"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+     <meta name="og:type" content="website">
+     <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+     <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+     <meta property="og:description" content="멘테이모-sns로그인"> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+     <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+     <meta property="og:site-name" content="멘테이모-sns로그인">
+     <!-- 선택적 -->
+     <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+     <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+ 
+     <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+     <!-- 트위터 미리보기 설정 -->
+     <!--
+     <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+     <meta name="twitter:title" content="콘텐츠 제목" /> 
+     <meta name="twitter:description" content="웹페이지 설명" /> 
+     <meta name="twitter:image" content="표시되는 이미지 " /> 
+     -->
+ 
+     <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+     <!--iOS-->
+     <!--
+     <meta property="al:ios:url" content=" ios 앱 URL" />
+     <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+     <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+     -->
+     <!--Android-->
+     <!--
+     <meta property="al:android:url" content="안드로이드 앱 URL" />
+     <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+     <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+     <meta property="al:web:url" content="안드로이드 앱 URL" />
+     -->
+ 
+ 
+    <title>멘테이모 sns로그인</title>
+    <!-- 네이버로그인 -->
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+     <!-- JS -->
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <!-- 카카오 로그인 -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    
+
+
+
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 구글 로그인 -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    
+    <!-- SweetAlert2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/sweetalert.css">
+
+     <!-- 상수 정의 -->
+     <script src="js/const.js"></script>
+    <!-- 공통 라이브러리 -->
+    <script  src="js/util.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+    
+    <script>
+        function handleCredentialResponse(){
+          alert('aaaa');
+        }
+    </script>
+</head>
+<body>
+
+
+    <div class="loading-container" id="loding_container">
+        <div class="loading"></div>
+        <div class="loading-text" id="loading_text">loading</div>
+    </div>
+    <!-- 로그인 팝업 -->
+    <div class="addit-login-popup" id="login_popup">
+    </div>
+    <!-- header -->
+    <header id="header" class="addit-bg-gradiant"></header>
+    <!-- secion -->
+    <div class="sns-login-section">
+        <div class="sns-login-modal">
+            <h2 class="sns-login-h2">자주 사용하는 SNS채널에 로그인하고 멘테이모 이벤트 소식을 메일로 받아보세요~!</h2>
+            <div class="btn-group">
+                <button class="sns-login-btn kakao-btn" id="btn_kakao_login">카카오 계정으로 로그인</button>
+                <button class="sns-login-btn naver-btn" id="naverIdLogin">네이버 아이디로 로그인</button>
+                <!-- <button class="sns-login-btn naver-btn" id="google-signin-button">구글 아이디로 로그인</button> -->
+                <!-- 구글로그인 관련 -->
+                <div id="g_id_onload"
+                    data-client_id="AIzaSyA-_1UsmoawWChRhUYf5iCc2qiZgg_4yj8"
+                    data-auto_prompt="true">
+                </div>
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-size="large"
+                    data-locale="ko"
+                    data-theme="outline"
+                    data-text="sign_in_with"
+                    data-shape="rectangular"
+                    data-callback="handleCredentialResponse"
+                    data-logo_alignment="left">
+                </div>
+                <!-- dev.menteimo.com/googlelogin/login.html -->
+
+            </div>
+        </div>
+    </div>
+    <!-- foooter -->
+    <footer id="footer"></footer>
+    
+    <script>
+        window.onload = function(){
+
+            G_NOWPAGE = decodeURI(decodeURIComponent($.urlParam("e_idx")));
+            if (isEmpty(G_NOWPAGE)){
+                G_NOWPAGE = 1;
+            }
+            draw_html('#header', HEADER_HTML);   
+            draw_html('#footer', FOOTER_HTML);   
+            draw_html('#login_popup', LOGIN_HTML);   
+            draw_html('#signIn_popup', SIGNIN_HTML);
+            // naverLogin.init();
+        };
+      
+        // 네이버 로그인 관련
+        const naverLogin = new naver.LoginWithNaverId(
+            {
+                clientId: "cywrhc6tyVx6nNxE3p9R",
+                callbackUrl: "http://yongjae.menteimo.com/snsLogin.html",
+                // loginButton: {color: "green", type: 2, height: 40, width: 300}
+            }
+        );
+        naverLogin.init();  
+        $(document).on('click', '#naverIdLogin', function(){
+        
+            naverLogin.getLoginStatus(function (status) {
+                if (status) {
+                    const Email = naverLogin.user.getEmail();
+
+                    if(Email===null||Email===undefined ){
+                        alert("이메일이 필요합니다. 정보제공을 동의해주세요.");
+                        naverLogin.reprompt();
+                        return ;  
+                    }else{
+                        setLoginStatus(Email)
+                        
+                    }
+                }
+            });
+        })
+        // 네이버 로그인 콜백
+        function setLoginStatus(Email){
+            let naverEmail = new Object();
+            naverEmail.cmd = 'update_email'
+            naverEmail.e_email = Email
+            // 이메일 값을 서버로 전달하여 데이터베이스에 저장하는 로직을 작성합니다.
+            var msg = saveEmailToDatabase(naverEmail, true);
+            alert(msg)
+        }
+
+        // 구글 로그인 관련
+   
+
+    </script>
+</body>
+</html>

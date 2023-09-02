@@ -1,0 +1,83 @@
+{
+    "baseinfo": {
+      "customerid": "37",
+      "mainimage": "ad_enter.PNG",
+      "event_start_date": "2023-02-01",
+      "event_end_date": "2023-02-03",
+      "event_title": "이벤트 제목",
+      "Notice": [
+        "1번 유의",
+        "2번 유의"
+      ],
+      "sns_share": {
+        "kakao_sns_share": "카공",
+        "facebook_sns_share": "페공",
+        "blog_sns_share": "블공",
+        "band_sns_share": "밴공",
+        "instagram_sns_share": "인공"
+      },
+      "sns_friend": {
+        "kakao_sns_friend": "카친",
+        "facebook_sns_friend": "페친",
+        "blog_sns_friend": "블친",
+        "band_sns_friend": "밴친",
+        "instagram_sns_friend": "인친"
+      },
+      "bgColor": "c6ffe5",
+      "fontSize": "1"
+    },
+    "quizepreinfo": [
+      {
+        "prelinkType": "0",
+        "preInfoLink": "유링크"
+      },
+      {
+        "prelinkType": "1",
+        "preInfoLink": "하이퍼링크"
+      }
+    ],
+    "quize": [
+      {
+        "quizType": "1",
+        "quizTitle": "주관식 제목",
+        "quizAns": "주관식 정답",
+        "quizInfoType": "1",
+        "quizInfoFileName": "all_receive.PNG",
+        "hint": "정답",
+        "quizAnsType": "1"
+      },
+      {
+        "quizType": "0",
+        "quizTitle": "객관식 제목",
+        "quizAns": "객관식 정답",
+        "quizInfoType": "0",
+        "quizInfoFileName": "",
+        "hint": "정답",
+        "subVal": [
+          {
+            "viewType": "0",
+            "viewData": "111111111"
+          },
+          {
+            "viewType": "1",
+            "viewData": "d_event.png"
+          }
+        ]
+      }
+    ],
+    "shot": [
+      {
+        "shotType": "0",
+        "shotUrl": "구독 URKL"
+      },
+      {
+        "shotType": "1",
+        "shotUrl": ""
+      }
+    ],
+    "agree": {
+      "privacy_name": "1",
+      "privacy_phone": "1",
+      "privacy_email": "1"
+    }
+  }

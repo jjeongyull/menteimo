@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+     <!-- 반응형 적용을 위한 설정-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="관리자 콘솔">
+ 
+     <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+     <meta content="telephone=no" name="format-detection">
+ 
+     <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+     <meta name="apple-mobile-web-app-title" content="관리콘솔">
+     <link rel="apple-touch-icon" href="#">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+     <link rel="apple-touch-startup-image" href="#">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     
+     <!-- https://ogp.me/ 참고 -->
+     <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+     <meta property="og:title" content="멘테이모 관리자 페이지"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+     <meta name="og:type" content="website">
+     <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+     <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+     <meta property="og:description" content="멘테이모 관리자 페이지입니다."> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+     <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+     <meta property="og:site-name" content="멘테이모 관리자 페이지">
+     <!-- 선택적 -->
+     <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+     <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+ 
+     <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+     <!-- 트위터 미리보기 설정 -->
+     <!--
+     <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+     <meta name="twitter:title" content="콘텐츠 제목" /> 
+     <meta name="twitter:description" content="웹페이지 설명" /> 
+     <meta name="twitter:image" content="표시되는 이미지 " /> 
+     -->
+ 
+     <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+     <!--iOS-->
+     <!--
+     <meta property="al:ios:url" content=" ios 앱 URL" />
+     <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+     <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+     -->
+     <!--Android-->
+     <!--
+     <meta property="al:android:url" content="안드로이드 앱 URL" />
+     <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+     <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+     <meta property="al:web:url" content="안드로이드 앱 URL" />
+     -->
+    <title>멘테이모 이벤트 추가</title>
+
+    <!-- reset CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- 외부 CSS -->
+    <link rel="stylesheet" href="js/jquery-ui.css">
+
+    <!-- ADDIT CSS -->   
+    <link type="text/css" rel="stylesheet" href="css/wheelcolorpicker.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 외부 JS -->
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="js/jquery.wheelcolorpicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="js/datapicker.js"></script>
+
+    <!-- 공통 라이브러리 -->
+    <script  src="js/util.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+     <!-- 상수 정의 -->
+    <script src="js/const.js"></script>
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+
+    <script>
+        $(function(){
+            var isLogin = getCookie('login');
+            if (isLogin !== "logined"){
+                alert("로그인하세요.");
+                goToPage("index.html", "");
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- 로그인 팝업 -->
+    <div class="addit-login-popup" id="login-popup">
+
+    </div>
+
+    <header id="header" class="addit-bg-gradiant"></header>
+
+    <div class="addit-grid-box1 addit-center2">
+        <h1 class="addit-h1 addit-margin3">이벤트 추가</h1>
+        <div class="addit-grid-5">
+            <h2 class="addit-h2 addit-margin2">기본정보</h2>
+
+            <!-- 이벤트추가 고객사 선택 -->
+                <div>
+                    <div class="addit-box-type1">
+                        <!-- 이벤트 수정을 위한 숨김 속성 설정 -->
+                        <input type="hidden" id="e_idx" value="">
+
+                        <div class="addit-grid-8">
+                            <label>고객사 선택</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <select class="addit-grid-8 addit-input-type1" id="select_customer_list">
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 추가할 이벤트 타이틀 이미지 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label>메인 이미지</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <input class="addit-grid-4 addit-input-type1" type="file" id="mainimage" placeholder="이벤트 메인 이미지를 선택하세요.">
+                            <div><img src="#" id="mainimage_img" class="addit-preview-size" alt="이벤트 메인이미지"></div>
+                        </div>
+                    </div>
+
+                    <!-- 추가할 이벤트 기간 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label class="addit-grid-8" for="sdate">이벤트 기간</label>
+                        </div>
+                        <div class="addit-grid-5-flex">
+                            <input type="text" name="sdate" id="event_start_date" placeholder="시작날짜" readonly class="datepicker addit-input-type1">
+                            <span>~</span>
+                            <input type="text" name="edate" id="event_end_date" placeholder="종료날짜" readonly class="datepicker addit-input-type1">
+                        </div>
+                    </div>
+
+                    <!-- 추가할 이벤트 제목 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label>이벤트 제목</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <input class="addit-grid-4 addit-input-type1" maxlength="200" type="text" id="event_title" placeholder="이벤트 제목을 입력하세요.">
+                        </div>
+                    </div>
+
+                    <!-- 추가할 이벤트 제목 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label>이벤트 설명</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <input class="addit-grid-4 addit-input-type1" maxlength="200" type="text" id="event_description" placeholder="SNS공유 시에 사용될 이벤트 설명을 입력하세요.(제목과 동일하게 적용해도 됨.)">
+                        </div>
+                    </div>
+
+
+                    <!-- 이벤트 추가시 유의사항 선택 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <input type="checkbox" id="checkbox_event_info" value="1">
+                            <label for="checkbox_event_info">유의사항</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <div class="addit-grid-5">
+                                <input class="addit-input-type1" type="text" maxlength="2" id="event_info_count" placeholder="유의사항 갯수 설정" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                <button class="addit-btn-type1" id="btn_event_info_count">확인</button>
+                            </div>
+                            <!-- 유의사항 출력 -->
+                            <div id="div_event_info_text">
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 이벤트 추가시 sns공유 선택 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label>SNS공유버튼</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-share" type="checkbox" id="checkbox_share_kakao_url">
+                                    <label for="checkbox_share_kakao_url">카카오URL</label>
+                                </div>
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-share" type="checkbox" id="checkbox_share_facebook_url">
+                                    <label for="checkbox_share_facebook_url">페이스북URL</label>
+                                </div>
+                                <!--<input class="addit-grid-4 addit-input-type1" type="text" placeholder="FACEBOOK" id="facebook_sns_share" maxlength="200">-->
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-share" type="checkbox" id="checkbox_share_blog_url">
+                                    <label for="checkbox_share_blog_url">블로그URL</label>
+                                </div>
+                                <!--<input class="addit-grid-4 addit-input-type1" type="text" placeholder="BLOG" id="blog_sns_share" maxlength="200">-->
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-share" type="checkbox" id="checkbox_share_band_url">
+                                    <label for="checkbox_share_band_url">밴드URL</label>
+                                </div>
+                                <!--<input class="addit-grid-4 addit-input-type1" type="text" placeholder="BAND" id="band_sns_share" maxlength="200">-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 이벤트 추가시 sns친구추가 선택 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label>SNS친구버튼</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_kakao_url">
+                                    <label for="checkbox_friend_kakao_url">카카오URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="KAKAO" id="kakao_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_facebook_url">
+                                    <label for="checkbox_friend_facebook_url">페이스북URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="FACEBOOK" id="facebook_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_blog_url">
+                                    <label for="checkbox_friend_blog_url">블로그URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="BLOG" id="blog_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_band_url">
+                                    <label for="checkbox_friend_band_url">밴드URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="BAND" id="band_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_instagram_url">
+                                    <label for="checkbox_friend_instagram_url">인스타그램URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="INSTAGRAM" id="instagram_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_youtube_url">
+                                    <label for="checkbox_friend_youtube_url">유튜브URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="YOUTUBE" id="youtube_sns_friend">
+                            </div>
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-8">
+                                    <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_friend_twiter_url">
+                                    <label for="checkbox_friend_twiter_url">트위터URL</label>
+                                </div>
+                                <input class="addit-grid-4 addit-input-type1" type="text" placeholder="TWITTER" id="twiter_sns_friend">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-5-flex">
+                            <div class="addit-grid-8">
+                                <input class="addit-chk-sns-friend" type="checkbox" id="checkbox_youtube_id">
+                                <label for="checkbox_youtube_id">유튜브 사용</label>
+                            </div>
+                            <input class="addit-grid-4 addit-input-type1" type="text" placeholder="유튜브 영상 값을 입력하세요." id="youtube_id">
+                        </div>
+                    </div>
+
+                        <!-- sns 컨텐츠 띄우기 -->
+                    <div class="addit-bg-color addit-box-type1">
+                        <div class="addit-grid-8">
+                            <input type="checkbox" id="checkbox_sns_view" value="1">
+                            <label for="checkbox_sns_view">SNS컨텐츠 뷰</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-5-flex">
+                                    <input class="addit-margin5 addit-input-type1" type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="2" id="sns_view_count" placeholder="가져올 sns 갯수를 입력하세요">
+                                    <button class="addit-btn-type1" id="btn_sns_view_count">확인</button>
+                                </div>
+                            </div>
+                            <!-- 인증샷 종류선택 출력 -->
+                            <div id="sns_view_print">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 파일 다운로드 -->
+                    <div class="addit-bg-color addit-box-type1">
+                        <div class="addit-grid-8">
+                            <input type="checkbox" id="checkbox_file_down" value="1">
+                            <label for="checkbox_file_down">파일 다운로드</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <div class="addit-grid-5-flex">
+                                <div class="addit-grid-5-flex">
+                                    <input class="addit-margin5 addit-input-type1" type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="2" id="file_down_count" placeholder="다운로드 파일 개수를 입력하세요">
+                                    <button class="addit-btn-type1" id="btn_file_down_count">확인</button>
+                                </div>
+                            </div>
+                            <!-- 인증샷 종류선택 출력 -->
+                            <div id="file_down_print">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 추가할 이벤트 배경색상 -->
+                    <div class="addit-box-type1">
+                        <div class="addit-grid-8">
+                            <label for="event_background_color">배경색상</label>
+                        </div>
+                        <div class="addit-grid-4">
+                            <input type="checkbox" value="1" id="checkbox_gradient"><label class="addit-grid-3" for="checkbox_gradient">라그디언트 사용</label>
+                            <input class="addit-grid-2 addit-input-type1" type="text" id="bgColor" placeholder="시작색상" data-wheelcolorpicker>
+                            <input class="addit-grid-2 addit-input-type1" type="text" id="bgColor_End" placeholder="종료색상" data-wheelcolorpicker>
+                        </div>
+                    </div>
+                    <!-- 이벤트 추가시 글자크기옵션 삽입 여부 || 유튜브 메인화면 뷰-->
+                    <div class="addit-box-type1 addit-margin2"> 
+                            <label class="addit-grid-8" for="fontSize"><input type="checkbox" id="fontSize" value="1">&nbsp;유튜브 메인 뷰</label>
+                    </div>
+                </div>
+
+                <div class="addit-line-type1 addit-margin3"></div>
+
+            <div class="addit-margin3">
+                <!-- 퀴즈정보 -->
+                <h2 class="addit-margin2 addit-h2">퀴즈 리스트</h2>
+
+                <!-- 퀴즈 사전정보 유무 -->
+                <div class="addit-box-type1">
+                    <div class="addit-grid-8">
+                        <input type="checkbox" id="checkbox_event_prev_info">
+                        <label for="checkbox_event_prev_info">사전정보</label>
+                    </div>
+                    <div class="addit-grid-4">
+                        <div class="addit-grid-5-flex addit-margin1">
+                            <input class="addit-margin5 addit-input-type1" type="text" maxlength="2" id="event_prev_info_count" placeholder="사전정보 갯수를 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            <button class="addit-btn-type1" id="btn_event_prev_info_count">확인</button>
+                        </div>
+                        <!-- 사전정보 출력 -->
+                        <div id="div_event_prev_info_text"></div>
+                    </div>
+                </div>
+
+                <!-- 퀴즈갯수 -->
+                <div class="addit-box-type1">
+                    <div class="addit-grid-8">
+                        <label>퀴즈수</label>
+                    </div>
+                    <div class="addit-grid-5-flex">
+                        <input class="addit-margin5 addit-input-type1" type="text" maxlength="2" id="event_quiz_count" placeholder="퀴즈갯수를 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                        <button class="addit-btn-type1" id="btn_event_quiz_count">확인</button>
+                        <span class="addit-sub addit-color-blue">&nbsp;퀴즈가 없을 경우 개수 만큼 생성, 퀴즈가 존재할 경우 추가 생성됩니다.</span>
+                    </div>
+                </div>
+
+                <!-- 퀴즈 갯수에따라 퀴즈 출력 -->
+                <div id="make_event_quiz_list">
+                   
+                    <!-- 객관식 폼 끝 -->
+                </div>
+
+                <!-- 인증샷 사용여부 -->
+                <div class="addit-bg-color addit-box-type1">
+                    <div class="addit-grid-8">
+                        <input type="checkbox" id="checkbox_shot" value="1">
+                        <label for="checkbox_shot">인증샷 및 파일첨부</label>
+                    </div>
+                    <div class="addit-grid-4">
+                        <div class="addit-grid-5-flex">
+                            <div class="addit-grid-5-flex">
+                                <input class="addit-margin5 addit-input-type1" type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="2" id="shot_count" placeholder="인증샷 갯수를 입력하세요.">
+                                <button class="addit-btn-type1" id="btn_shot_count">확인</button>
+                            </div>
+                        </div>
+                        <!-- 인증샷 종류선택 출력 -->
+                        <div id="shot_list_print">
+                        </div>
+                    </div>
+                </div>
+                <!-- 개인정보처리방침 -->
+                <div class="addit-box-type1 addit-bg-color2">
+                    <span class="addit-grid-8">개인정보처리방침</span>
+                    <div class="addit-grid-5-flex">
+                        <label class="addit-grid-11 addit-margin5 addit-p" for="privacy_name">이름
+                        <input type="checkbox" id="privacy_name" class="addit-pointer" value="1" checked></label>
+                        <label class="addit-grid-11 addit-margin5 addit-p" for="privacy_phone">연락처
+                        <input type="checkbox" id="privacy_phone" class="addit-pointer" value="1" checked></label>
+                        <label class="addit-grid-11 addit-margin5 addit-p" for="privacy_email">
+                        이메일<input type="checkbox" id="privacy_email" class="addit-pointer" value="1" checked></label> 
+                        <label class="addit-grid-11 addit-margin5 addit-p" for="privacy_address">
+                        주소<input type="checkbox" id="privacy_address" class="addit-pointer" value="1" checked></label> 
+                    </div>
+                </div>
+
+                <!-- 고객사 전용 개인정보처리방침-->
+                <div class="addit-bg-color addit-box-type1">
+                  <div class="addit-grid-8">
+                    <input type="checkbox" id="checkbox_privacy_customer" value="1">
+                    <label for="checkbox_privacy_customer">고객사방침추가</label>
+                  </div>
+                  <div class="addit-grid-5-flex">
+                      <textarea rows="10" cols="100" id="privacy_customer" style="display:none;"></textarea>
+                  </div>
+                </div>
+
+                <!-- 이벤트 추가시 장기요양병원 웹진 바로가기 버튼 출력 -->
+                <div class="addit-box-type1 addit-margin2"> 
+                    <label class="addit-grid-8" for="btn_npbs_plus"><input type="checkbox" id="btn_npbs_plus" value="1">&nbsp;웹진구독 버튼</label>
+                    <div class="addit-grid-5">
+                        <input class="addit-input-type1 addit-grid-4  addit-margin0" type="text" placeholder="연결 url을 입력해주세요" id="npbs_url">
+                        <input class="addit-input-type1 addit-grid-4" type="file" id="webzine_img">
+                    </div>
+                </div>
+
+               
+            </div>
+            <!--
+                date : 2023-02-20 / writer : 정용재
+                desc : 버튼 구조 수정
+            -->     
+            <div class="addit-center1 addit-margin3">
+                <button id="btn_event_makes" class="addit-btn-type3">이벤트 만들기</button>
+                <button id="btn_event_list" class="addit-btn-type3">리스트 보기</button>
+            </div>
+            <!--
+            <button id="btn_upload_file" class="addit-center2 addit-btn-type3 addit-margin3">파일 업로드</button>
+            <button id="btn_json_data" class="addit-center2 addit-btn-type3 addit-margin3">JSON 업로드</button>
+            -->
+    </div>
+    <footer id="footer"></footer>
+    <script>
+        window.onload = function(){
+
+            draw_html('#header', HEADER_HTML);   
+            draw_html('#footer', FOOTER_HTML);   
+            draw_html('#login_popup', LOGIN_HTML);  
+
+	    //로그인 버튼 안보이게
+            $("#btn_login_popup_open").css('display','none'); 
+
+            // 고객사 정보를 읽어온다.
+            var params = {};
+            params.cmd = "load_customer";
+            params.loadcount = -1;
+            global_customer_json = load_data(params);
+            draw_selectbox_customerlist(global_customer_json, '#select_customer_list');
+
+            // 파라미터가 전달된 경우 수정 모드
+            var e_idx = decodeURI(decodeURIComponent($.urlParam("e_idx")));
+            var copy = decodeURI(decodeURIComponent($.urlParam("copy")));
+            if (!isEmpty(e_idx)){
+                if(isEmpty(copy)){
+                    var params = {};
+                    params.cmd = "load_event";
+                    params.e_idx = e_idx;
+                    global_evnet_json = load_data(params);
+                    $('#e_idx').val(e_idx);
+                    drawEventData(global_evnet_json);
+                    $('#btn_event_makes').text("이벤트 수정하기");
+                }else{
+                    var params = {};
+                    params.cmd = "load_event";
+                    params.e_idx = e_idx;
+                    global_evnet_json = load_data(params);
+                    $('#e_idx').val(e_idx);
+                    drawEventData(global_evnet_json);
+                    $('#btn_event_makes').text("이벤트 만들기");
+                    history.replaceState({}, null, location.pathname);
+                }
+            }else{
+                bchecked = $("#checkbox_event_info").is(":checked");
+                toggelCheckBox(bchecked, "#event_info_count", "disabled");
+                toggelCheckBox(bchecked, "#btn_event_info_count", "disabled");
+
+                // sns 공유 체크 설정
+                bchecked = $("#checkbox_share_kakao_url").is(":checked");
+                // 선택된 엘리먼트의 부모를 찾아 형제 엘리먼트의 속성을 disable 시킨다
+                toggelCheckBox(bchecked, $("#checkbox_share_kakao_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_share_facebook_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_share_facebook_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_share_blog_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_share_blog_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_share_band_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_share_band_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_share_instagram_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_share_instagram_url").parent().siblings(), "disabled");
+
+                // sns 친구 설정
+                bchecked = $("#checkbox_friend_kakao_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_kakao_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_friend_facebook_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_facebook_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_friend_blog_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_blog_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_friend_band_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_band_url").parent().siblings(), "disabled");
+                bchecked = $("#checkbox_friend_instagram_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_instagram_url").parent().siblings(), "disabled");
+                //유튜브
+                bchecked = $("#checkbox_friend_youtube_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_youtube_url").parent().siblings(), "disabled");
+                //트위터
+                bchecked = $("#checkbox_friend_twiter_url").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_friend_twiter_url").parent().siblings(), "disabled");
+                //유튜브 영상 사용 관련
+                bchecked = $("#checkbox_youtube_id").is(":checked");
+                toggelCheckBox(bchecked, $("#checkbox_youtube_id").parent().siblings(), "disabled");
+                //sns콘텐츠 뷰사용 관련
+                bchecked = $("#checkbox_sns_view").is(":checked");
+                toggelCheckBox(bchecked, "#sns_view_count", "disabled");
+
+                // 2023.05.16 추가 파일 다운로드 사용 관련
+                bchecked = $("#checkbox_file_down").is(":checked");
+                toggelCheckBox(bchecked, "#file_down_count", "disabled");
+
+
+                // 사전정보
+                bchecked = $("#checkbox_event_prev_info").is(":checked");
+                toggelCheckBox(bchecked, "#event_prev_info_count", "disabled");
+
+                // 인증샷
+                bchecked = $("#checkbox_shot").is(":checked");
+                toggelCheckBox(bchecked, "#shot_count", "disabled");
+
+                
+                // 임의버튼
+                bchecked = $("#btn_npbs_plus").is(":checked");
+                toggelCheckBox(bchecked, "#npbs_url", "disabled");
+                toggelCheckBox(bchecked, "#webzine_img", "disabled");
+
+                // 동적 생성 엘리먼트 초기화
+                ClearHTML("#div_event_info_text")
+                ClearHTML("#div_event_prev_info_text")
+                ClearHTML("#shot_list_print");
+                
+                // test
+                //$('#event_start_date').val('2023-02-01');
+                //$('#event_end_date').val('2023-02-03');
+                //$(rtnIDString(baseinfo_event_title)).val('이벤트 제목');
+            }
+        }
+    </script>
+</body>
+</html>

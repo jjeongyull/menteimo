@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+     <!-- 반응형 적용을 위한 설정-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="이벤트페이지">
+ 
+     <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+     <meta content="telephone=no" name="format-detection">
+ 
+     <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+     <meta name="apple-mobile-web-app-title" content="이벤트페이지">
+     <link rel="apple-touch-icon" href="#">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+     <link rel="apple-touch-startup-image" href="#">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     
+     <!-- https://ogp.me/ 참고 -->
+     <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+     <meta property="og:title" content="이벤트페이지"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+     <meta name="og:type" content="website">
+     <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+     <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+     <meta property="og:description" content="이벤트 페이지입니다."> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+     <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+     <meta property="og:site-name" content="이벤트 페이지">
+     <!-- 선택적 -->
+     <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+     <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+ 
+     <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+     <!-- 트위터 미리보기 설정 -->
+     <!--
+     <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+     <meta name="twitter:title" content="콘텐츠 제목" /> 
+     <meta name="twitter:description" content="웹페이지 설명" /> 
+     <meta name="twitter:image" content="표시되는 이미지 " /> 
+     -->
+ 
+     <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+     <!--iOS-->
+     <!--
+     <meta property="al:ios:url" content=" ios 앱 URL" />
+     <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+     <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+     -->
+     <!--Android-->
+     <!--
+     <meta property="al:android:url" content="안드로이드 앱 URL" />
+     <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+     <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+     <meta property="al:web:url" content="안드로이드 앱 URL" />
+     -->
+ 
+ 
+    <title>이벤트 페이지</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- JS -->
+    <!-- 카카오 공유하기 관련 JS -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js" integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
+
+    
+    <!-- SweetAlert2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/sweetalert.css">
+
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/util.js"></script>
+
+    <!-- 공통 라이브러리 -->
+    <script  src="js/util.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+    <!-- 상수 정의 -->
+    <script src="js/const.js"></script>
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+    <!-- 카카오 공유 버튼 JS -->
+    <script src="js/snsshare.js"></script>
+    <script>Kakao.init('ddca0fafcdcd838ee2d45f097937b5d8');</script>
+    <!-- <script defer src="js/common.js"></script>/ -->
+
+</head>
+<body>
+     <!-- 이벤트 참여 팝업 -->
+    <div class="wrap">
+        <div class="layer-popup ok_layer_popup">
+            <div class="popup_content">
+                <div class="popup_anwer anwer_ok" id="popup_anwer">응모가 완료되었습니다.</div>
+                <div class="popup_anwer_info" id="event_join_popup">
+                    <h3 id="event_join_text"></h3>
+                    <br>
+                    <br>
+                    <div class="sns-share-popup">
+                        <div class="url_button" id="kakao_event">
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/kakao.png" alt=""> 한국전자통신연구원 카카오
+                            </a> -->
+                        </div>
+                        <div class="url_button" id="facebook_event">
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/facebook.png" alt=""> 한국전자통신연구원 페이스북
+                            </a> -->
+                        </div>
+                        <div class="url_button" id="blog_event">
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/blog.png" alt=""> 한국전자통신연구원 블로그
+                            </a> -->
+                        </div>
+                        <div class="url_button" id="band_event">
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/band.png" alt=""> 한국전자통신연구원 밴드
+                            </a> -->
+                        </div>
+                        <!-- <div class="url_button" id="insta_event"> -->
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/instar.png" alt=""> 한국전자통신연구원 인스타그램
+                            </a> -->
+                        <!-- </div> -->
+                        <!-- <div class="url_button" id="youtube_event"> -->
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/youtube.png" alt=""> 한국전자통신연구원 유튜브
+                            </a> -->
+                        <!-- </div> -->
+                        <!-- <div class="url_button" id="twiter_event"> -->
+                            <!-- <a href="#" target="_blank">
+                                <img src="img/twiter.png" alt=""> 한국전자통신연구원 유튜브
+                            </a> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <button class="btn-sns-login-go" id="btn_sns_login_go">🎉 멘테이모 이벤트소식 받아보기 🎁</button>
+                <div class="popup-next" id="event_popupo_next">닫기</div>
+            </div>
+        </div>
+    </div>
+    <!-- 이벤트페이지 -->
+    <div class="addit-grid-12 addit-bg-gradiant-2">
+        <!-- 이벤트 IDX 히든 값-->
+        <input type="hidden" id="e_idx" value="">
+        <!-- 글자크기 옵션 -->
+        <div class="addit-floating-menu-1" id="font_size_UP"></div>
+
+        <div class="addit-box-sh">
+            <!-- 메인이미지 들어가는 곳 -->
+            <div class="addit-content-1">
+                <img class="addit-image-block" src="" id="mainimage">
+            </div>
+            <!-- 유의사항 첨부 -->
+            <div class="addit-content-1 addit-margin11 speech" id="noticeDiv">
+
+            </div>
+        </div>
+
+        <!-- SNS 공유 및 친구 컨텐츠 들어가는 곳 -->
+        <div class="addit-content-1 addit-flex-inner2 " >
+
+            <!-- sns 공유 부분 -->
+            <div class="addit-content-2" id="snsShareDiv">
+                <h3 class="addit-h4 addit-margin6" id="snsShare_header"></h3>
+                <!-- sns공유 아이콘 -->
+                <div class="addit-grid-8-flex" id="snsShare"></div>
+            </div>
+
+            <!-- sns 친구맺기 부분 -->
+            <div class="addit-content-2" id="snsFriendDiv">
+                <!-- sns친구 타이틀 -->
+                <h3 class="addit-h4 addit-margin6" id="snsFriend_header"></h3>
+
+                <!-- sns친구 아이콘 -->
+                <div class="addit-grid-8-flex" id="snsFriend"></div>
+            </div>
+        </div>
+
+        <!--유튜브 영상 출력 위치-->
+        <div class="addit-youtube-test" id="youtube_id"> 
+            <div class="addit-play-button" id="youtube_view"></div>
+        </div>
+
+        <!-- 문제사전정보 출력 -->
+        <div class="addit-flex-inner2 addit-margin3" id="quizPreInfo"></div>
+
+        
+        <!-- 문제출력 폼 -->
+        <div class="addit-content-1 speech" id="quizDiv"></div>
+
+        <!-- 인증샷 첨부 폼 -->
+        <div class="addit-content-1 addit-margin3 speech" id="shotDiv"></div>
+
+        <!-- 개인정보처리방침 -->
+        <div class="addit-QuizContent-area addit-privacy-Div addit-margin3">
+            <div class="addit-box-type15 speech">
+                <br>
+                <p>*</p>이벤트 참여 및 경품 발송을 위한 정보입력을 해주세요.
+            </div>
+      
+            <div class="addit-box-type16" id="event_name">
+                 <!-- 개인정보처리방침 이름 추가 -->
+            </div>
+
+            <div class="addit-box-type16" id="event_phone">
+                 <!-- 개인정보처리방침 연락처 추가 -->
+            </div>
+
+            <div class="addit-box-type16" id="event_email">
+                 <!-- 개인정보처리방침 이메일 추가 -->
+            </div>
+    
+            <span class="addit-privacy-title speech">개인정보처리방침</span>
+            <div class="addit-agreed-info" id="privacy"></div>
+            <div class="addit-agreed-info addit-height" id="privacy_customer" style="display:none;"></div>
+            <label for="checbox_agreed" class="speech">
+                <input id="checbox_agreed" type="checkbox" value="1">개인정보 수집·이용 동의
+            </label>
+            <p class="addit-sub addit-display">
+                ※ 동의를 거부할 권리가 있으며, 미동의 시 경품 당첨이 불가합니다.
+            </p>
+             <p class="addit-thank">
+                ■ 참여해주셔서 감사합니다.
+            </p>
+            <button class="addit-privacy-next speech" id="btn_join_event"> 참여하기!</button>
+        </div>
+
+        <!-- 임의버튼 나오는 곳 -->
+        <div id="div_btn_npbs_view">
+            <!-- <div class="webzinelink" style="cursor: pointer;">
+                <a href="https://www.longtermcare.or.kr/npbs/contents/np/r/e/560p01/202302/index.html" target="_parent">
+                    <img src="img/banner_left_text.png"><br>
+                    웹진으로 이동</a>
+            </div> -->
+        </div>
+
+        <!-- 관리자에게만 보이는 버튼 -->
+
+        <!-- 결과페이지 버튼 -->
+        <div class="addit-group-1 addit-margin3 addit-grid-7-flex" id="menu">
+            <button class="addit-btn-type4 addit-btn-color-1" id="btn_event_list">이벤트리스트</button>
+            <button class="addit-btn-type4 addit-btn-color-1" id="btn_result_page">결과페이지</button>
+            <!-- <button class="addit-btn-type4 addit-btn-color-2" data-e_idx="0" id="btn_event_modify">이벤트수정</button> -->
+            <button class="addit-btn-type4 addit-btn-color-3" id="btn_event_delete">이벤트삭제</button>
+        </div>
+
+        <footer class="addit-bg-none speech">
+            <p>서울시 강남구 봉은사로 321 대화빌딩 3층 애드아이티</p>
+            <p>TEL. 02-6012-0007</p>
+            <a class="addit-a-1" href="http://additdev.iptime.org:8000/test/privacy/privacy.html">개인정보처리방침</a>
+            <span>|</span>
+            <a class="addit-a-1" href="http://additdev.iptime.org:8000/test/privacy/privacyEmail.html">이메일무단수집거부</a>
+            <p> COPYRIGHTⓒ Addit INC. All right reserved</p>
+        </footer>
+
+        <div class="addit-sns-view" id="sns_view_div">
+
+        </div>
+        
+
+    </div>
+   
+    <script>
+        window.onload = function(){
+            
+	        g_inpath = document.referrer;
+            //alert(g_inpath);
+            $("#privacy").load('privacy.html');
+            // 이벤트 Index (Get)
+            var e_idx = decodeURI(decodeURIComponent($.urlParam("e_idx")));   
+            if (!isEmpty(e_idx)){
+                let params = {};
+                params.cmd = "load_event";
+                params.e_idx = e_idx;
+                $("#e_idx").val(e_idx);
+                global_evnet_json = load_data(params);
+                if (global_evnet_json.totcount != 1){
+                  alert('이벤트 기간이 만료되었거나 이벤트가 존재하지 않습니다.\n\n관리자에게 문의하세요.');
+                  //goToPage('index.html', '');
+                  return false;
+                }
+                drawEventData_Real(global_evnet_json);
+                // youtubeView(Youtube_ko, '#youtube_view')
+            }
+            
+            var replaceId  = /[,]/;
+            var replaceId2  = /[, ]/;
+            /*특수문자 정규식*/
+            $(".addit-special").on("focusout", function() {
+                var x = $(this).val();
+                if (x.length <= 1) {
+                    if (x.match(replaceId2)) {
+                    x = x.replace(replaceId2, "");
+                    }
+                    $(this).val(x);  
+             
+                }else{
+                    if (x.match(replaceId)) {
+                    x = x.replace(replaceId, "");
+                    }
+                    $(this).val(x); 
+                }
+            }).on("keyup", function() {
+                    if($(this).val().trim() == ''){
+                        $(this).val($(this).val().replace(replaceId2, ""));
+                        $(this).val($(this).val().replace(replaceId, ""));
+                        $(this).val($(this).val().replace(/ /gi, ""));
+                    }else{
+                        $(this).val($(this).val().replace(replaceId, ""));
+                    }   
+            });
+
+
+        };
+
+        $(function(){
+            $(".subtext").prop('disabled', true);
+            var isLogin = getCookie('login');
+            if (isLogin === "logined")
+                $('#menu').css('display', 'flex');
+            else
+                $('#menu').css('display', 'none');
+        });
+        
+
+    </script>
+
+    <!--youtube-test-->
+    
+</body>
+</html>

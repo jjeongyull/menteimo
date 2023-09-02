@@ -1,0 +1,29 @@
+<html>
+  <head>
+      <meta name="referrer" content="no-referrer-when-downgrade">
+      <script>
+        function handleCredentialResponse(){
+          alert('aaaa');
+        }
+      </script>
+  </head>
+  <body>
+      <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
+      <div id="g_id_onload"
+         data-client_id="778826721052-pf24cg148vmh4d2084ch39flp2j92426.apps.googleusercontent.com"
+         data-auto_prompt="true">
+      </div>
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-callback="handleCredentialResponse"
+         data-logo_alignment="left">
+      </div>
+  </body>
+</html>
+
+<!-- dev.menteimo.com/googlelogin/login.html -->
+

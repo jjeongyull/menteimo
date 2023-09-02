@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+     <!-- 반응형 적용을 위한 설정-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="멘테이모-이벤트관리">
+ 
+     <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+     <meta content="telephone=no" name="format-detection">
+ 
+     <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+     <meta name="apple-mobile-web-app-title" content="멘테이모-이벤트관리">
+     <link rel="apple-touch-icon" href="#">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+     <link rel="apple-touch-startup-image" href="#">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     
+     <!-- https://ogp.me/ 참고 -->
+     <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+     <meta property="og:title" content="멘테이모-이벤트관리"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+     <meta name="og:type" content="website">
+     <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+     <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+     <meta property="og:description" content="멘테이모-이벤트관리"> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+     <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+     <meta property="og:site-name" content="멘테이모-이벤트관리">
+     <!-- 선택적 -->
+     <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+     <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+ 
+     <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+     <!-- 트위터 미리보기 설정 -->
+     <!--
+     <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+     <meta name="twitter:title" content="콘텐츠 제목" /> 
+     <meta name="twitter:description" content="웹페이지 설명" /> 
+     <meta name="twitter:image" content="표시되는 이미지 " /> 
+     -->
+ 
+     <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+     <!--iOS-->
+     <!--
+     <meta property="al:ios:url" content=" ios 앱 URL" />
+     <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+     <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+     -->
+     <!--Android-->
+     <!--
+     <meta property="al:android:url" content="안드로이드 앱 URL" />
+     <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+     <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+     <meta property="al:web:url" content="안드로이드 앱 URL" />
+     -->
+ 
+ 
+    <title>멘테이모 관리자</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- JS -->
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- 공통 라이브러리 -->
+    <script  src="js/util.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- <script src="js/ck_event_jhshin.js"></script> -->
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+     <!-- 상수 정의 -->
+    <script src="js/const.js"></script>
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+
+    </head>
+<body>
+    <!-- 로그인 팝업 -->
+    <div class="addit-login-popup" id="login_popup">
+    </div>
+
+    <!-- 고객사 추가 팝업 -->
+    <div class="addit-customer-popup" id="customer_popup">
+        <div class="addit-customer-popup-inner">
+            <div class="addit-top-bar"><div class="addit-customer-popup-close" id="btn_customer_popup_close"><i class="fa-solid fa-xmark"></i></div></div>
+            <h2>고객사 추가</h2>
+            <div class="addit-customer-name-area"><label for="customer_name">고객사 이름</label><input type="text" id="customer_name"></div>
+            <div class="addit-customer-plus-btn" id="btn-_customer_plus">고객사 추가</div>
+        </div>
+    </div>
+
+    <header id="header" class="addit-bg-gradiant"></header>
+
+    <section class="addit-wrap  addit-margin3">
+       
+        <div>
+            <div class="addit-inner addit-flex-inner">
+                <h2 class="addit-h2">고객사 리스트</h2>
+                <div class="addit-main-top-btn-area">
+                    <div class="addit-black-board-btn" id="btn_event_plus">이벤트 추가</div>
+                    <div class="addit-black-board-btn" id="btn_oxQuiz_plus">OX퀴즈 추가</div>
+                    <div class="addit-black-board-btn" id="btn_customer_popup_open">고객사 추가</div>
+                </div>
+            </div>
+        </div>
+        <div class="addit-inner addit-center2">
+            <table class="addit-grid-4">
+                <thead class="addit-bg-colot5">
+                    <tr>
+                        <th class="addit-table-grid1 addit-font-color5 addit-padding1"><input type="checkbox"></th>
+                        <th class="addit-table-grid2 addit-font-color5 addit-padding1">고객사명</th>
+                        <th class="addit-table-grid3 addit-font-color5 addit-padding1">관리</th>
+                    </tr>
+                </thead>
+                <tbody class="addit-table-list-bg" id="all_customer_list_view"><!-- 고객사리스트 뿌려지는 곳 -->
+                    <!-- 뿌려질 리스트 -->
+                    
+                </tbody>
+            </table>           
+        </div>
+    </section>
+            <!-- pagenation -->
+            <div class="addit-inner" id="page_div">
+            </div>
+
+    <footer id="footer"></footer>
+
+    <script>
+        window.onload = function(){
+
+            draw_html('#header', HEADER_HTML);  
+            draw_html('#footer', FOOTER_HTML);   
+            draw_html('#login_popup', LOGIN_HTML);  
+
+
+            var params = {};
+            params.cmd = "load_customer";
+            params.nowpage = "1";
+            params.searchtype = "";         // 검색 유형
+            params.searchdata = "";         // 검색 데이터
+            params.loadcount = Data_Per_Page_Count;
+
+            global_customer_list_json = load_data(params);
+            draw_customer_list(global_customer_list_json, '#all_customer_list_view', "#page_div", 1);
+
+
+            var isLogin = getCookie('login');
+            if (isLogin === "logined")
+                ToggleLoginDiv(true);
+            else
+                ToggleLoginDiv(false);
+
+        }
+    </script>
+</body>
+</html>

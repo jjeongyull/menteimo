@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 반응형 적용을 위한 설정-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="이벤트페이지">
+
+    <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+    <meta content="telephone=no" name="format-detection">
+
+    <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+    <meta name="apple-mobile-web-app-title" content="이벤트페이지">
+    <link rel="apple-touch-icon" href="#">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-startup-image" href="#">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- https://ogp.me/ 참고 -->
+    <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+    <meta property="og:title" content="이벤트페이지"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+    <meta name="og:type" content="website">
+    <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+    <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+    <meta property="og:description" content="이벤트 페이지입니다."> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+    <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+    <meta property="og:site-name" content="이벤트 페이지">
+    <!-- 선택적 -->
+    <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+    <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+
+    <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+    <!-- 트위터 미리보기 설정 -->
+    <!--
+         <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+         <meta name="twitter:title" content="콘텐츠 제목" /> 
+         <meta name="twitter:description" content="웹페이지 설명" /> 
+         <meta name="twitter:image" content="표시되는 이미지 " /> 
+         -->
+
+    <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+    <!--iOS-->
+    <!--
+         <meta property="al:ios:url" content=" ios 앱 URL" />
+         <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+         <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+         -->
+    <!--Android-->
+    <!--
+         <meta property="al:android:url" content="안드로이드 앱 URL" />
+         <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+         <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+         <meta property="al:web:url" content="안드로이드 앱 URL" />
+         -->
+
+
+    <title>OX 이벤트 페이지</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!--swiper CSS-->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <!-- JS -->
+    <!-- 카카오 공유하기 관련 JS -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+        integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous">
+    </script>
+
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/util.js"></script>
+
+    <!-- 공통 라이브러리 -->
+    <script src="js/util.js"></script>
+    <!-- Swiper JS -->
+    <script src="js/swiper.min.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+    <!-- 상수 정의 -->
+    <script src="js/const.js"></script>
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+    <!-- 카카오 공유 버튼 JS -->
+    <script src="js/snsshare.js"></script>
+    <script>
+        Kakao.init('ddca0fafcdcd838ee2d45f097937b5d8');
+
+    </script>
+    <!-- <script defer src="js/common.js"></script>/ -->
+
+</head>
+
+<body>
+    <!--결과 로딩창-->
+    <div id="untree_co--overlayer" class="addit-overlay">
+        <div class="position-center">
+            <div class="loader loader-7"></div>
+
+            <div class="loader-text">결과 계산 중</div>
+        </div>
+    </div>
+
+    <!-- 답안지 팝업 -->
+    <div id="popup_result"></div>
+    <!-- <div class="layer_popup ok_layer_popup">
+        <div class="popup_content">
+            <div class="popup_anwer" id="popup_anwer"></div>
+            <div class="popup_anwer_info"></div>
+            <div class="popup_next" onclick="Nextslide()">다음</div>
+        </div>
+    </div> -->
+
+    <!--OX 퀴즈 첫 페이지-->
+    <div class="addit-oxwrap addit-center2">
+        <div class="addit-QuizContent_area" id="start">
+            <div class="addit-QuizImg-area" style="box-shadow: none;">
+                <img src="" alt="OX 퀴즈 첫메인이미지" id="mainimage">
+            </div>
+            <input id="e_idx" type="hidden" value="">
+
+            <div class="addit-content-1 addit-flex-inner2 ">
+
+                <!-- sns 공유 부분 -->
+                <div class="addit-content-2" id="snsShareDiv">
+                    <h3 class="addit-h4 addit-margin6" id="snsShare_header"></h3>
+                    <!-- sns공유 아이콘 -->
+                    <div class="addit-grid-8-flex" id="snsShare">
+                    </div>
+                </div>
+
+                <!-- sns 친구맺기 부분 -->
+                <div class="addit-content-3" id="snsFriendDiv">
+                    <!-- sns친구 타이틀 -->
+                    <h3 class="addit-h4 addit-margin6" id="snsFriend_header"></h3>
+
+                    <!-- sns친구 아이콘 -->
+                    <div class="addit-grid-8-flex" id="snsFriend">
+                    </div>
+                </div>
+            </div>
+
+            <div class="addit-Button2deps">
+                <div class="addit-Quizcontent2 addit-Quizcontent2-1" id="btn_other_test" data-swiper-parallax="-200">다른 테스트 하러가기</div>
+                <div class="addit-Quizcontent2 addit-Quizcontent-2-2">링크복사 하기</div>
+            </div>
+
+            <div class="addit-Quizcontent2 addit-StartButton">이벤트 참여하기</div>
+
+            <div class="addit-footer">
+                서울시 강남구 봉은사로 321 대화빌딩 3층 애드아이티 <br>
+                TEL. 02-6012-0007 <br>
+                <a class="addit-a-1" href="http://additdev.iptime.org:8000/test/privacy/privacy.html">개인정보처리방침</a>
+                <span>|</span>
+                <a class="addit-a-1" href="http://additdev.iptime.org:8000/test/privacy/privacyEmail.html">이메일무단수집거부</a><br>
+                COPYRIGHTⓒ Addit INC. All right reserved
+            </div>
+        </div>
+
+        <!--swiper 페이지-->
+        <div class="swiper-container aaaf" id="StartDiv">
+            <div class="swiper-wrapper" id="oxQuiz_div">
+
+                <div class="swiper-slide addit-privacy-slide">
+                    <div class="QuizContent_area first-aniamtion addit-privacy-oxDiv">
+
+                        <div class="addit-content-1 addit-oxspeech" id="noticeDiv">
+                        </div>
+
+                        <div class="QuizText ScaleDiv">
+                            <br>이벤트 참여 및 경품 발송을 위한 정보입력을 해주세요.
+                        </div>
+
+                        <div class="addit-content-1 addit-margin3 speech" id="shotDiv">
+                        </div>
+
+
+                        <div class="ScaleDiv" data-swiper-parallax="-200" id="div_name">
+
+                        </div>
+                        <div class="ScaleDiv" data-swiper-parallax="-600" id="div_phone">
+
+                        </div>
+                        <div class="ScaleDiv" data-swiper-parallax="-600"  id="div_email">
+
+                        </div>
+                        <div class="ScaleDiv" data-swiper-parallax="-600"  id="div_address">
+
+                        </div>
+
+                        <span class="addit-privacy-title speech">개인정보처리방침</span>
+                        <div class="addit-agreed-info" id="privacy"></div>
+                        <div class="addit-agreed-info addit-height" id="privacy_customer"></div>
+                        <label for="checbox_agreed" class="speech">
+                            <input id="checbox_agreed" type="checkbox" value="1">개인정보 수집·이용 동의
+                        </label>
+                        <p class="addit-sub addit-display">
+                            ※ 동의를 거부할 권리가 있으며, 미동의 시 경품 당첨이 불가합니다.
+                        </p>
+                        <p class="addit-thank">
+                            ■ 참여해주셔서 감사합니다.
+                        </p>
+                        <div class="addit-privacy-next" id="btn_next">다음</div>
+                    </div>
+                </div>
+
+                <div id="swiper_slide"></div>
+              
+            </div>
+           <!-- Add Pagination -->
+           <div class="swiper-pagination swiper-number"></div>
+           <!-- Add Arrows -->
+           <div class="swiper-button-next"></div>
+           <!-- <div class="swiper-button-prev"></div> -->
+        </div>
+                
+    </div>
+
+
+
+    <script src="js/slide.js"></script>
+    <script>
+        
+        window.onload = function () {
+            g_inpath = document.referrer;
+            //alert(g_inpath);
+            $("#privacy").load('privacy.html');
+            // 이벤트 Index (Get)
+            var e_idx = decodeURI(decodeURIComponent($.urlParam("e_idx")));
+            if (!isEmpty(e_idx)) {
+                let params = {};
+                params.cmd = "load_event";
+                params.e_idx = e_idx;
+                $("#e_idx").val(e_idx);
+                global_evnet_json = load_data(params);
+                drawOxQuizData_Real(global_evnet_json);
+            }
+        };
+    </script>
+        
+</body>
+
+</html>

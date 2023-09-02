@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <!-- 반응형 적용을 위한 설정-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="관리자 콘솔">
+ 
+     <!-- 모바일 웹 자동 링크 제거 -> 전화걸기 방지 -->
+     <meta content="telephone=no" name="format-detection">
+ 
+     <!-- 모바일 처리 : https://jeongah-story.tistory.com/202 , https://developers.google.com/web/fundamentals/design-and-ux/browser-customization?hl=ko 참고 -->
+     <meta name="apple-mobile-web-app-title" content="관리콘솔">
+     <link rel="apple-touch-icon" href="#">
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+     <link rel="apple-touch-startup-image" href="#">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     
+     <!-- https://ogp.me/ 참고 -->
+     <!-- SNS에서 공유 시 기본적으로 웹에 설정해줘야하는 og 메타태그 : Naver 블로그, 카카오톡 미리보기 설정 -->
+     <meta property="og:title" content="멘테이모 관리자 페이지"> <!-- SNS에서 공유 시 보여주는 타이틀-->
+     <meta name="og:type" content="website">
+     <meta property="og:image" content=""> <!-- SNS에서 공유 시 보여주는 이미지 -->
+     <meta property="og:url" content=""> <!-- SNS에서 공유 시 보여주는 이미지-->
+     <meta property="og:description" content="멘테이모 관리자 페이지입니다."> <!-- SNS에서 공유 시 보여주는 설명문구 -->
+     <meta property="og:locale" content="kr-KR"> <!-- SNS에서 공유 시 언어-지역, en-US 등 두개 이상 둘 수 있음 -->
+     <meta property="og:site-name" content="멘테이모 관리자 페이지">
+     <!-- 선택적 -->
+     <meta property="og:image:width" content="1066"> <!-- SNS에서 공유 시 보여주는 이미지 크기 -->
+     <meta property="og:image:height" content="558"> <!-- SNS에서 공유 시 보여주는 이미지 높이 -->
+ 
+     <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html 참고 -->
+     <!-- 트위터 미리보기 설정 -->
+     <!--
+     <meta name="twitter:card" content="트위터 카드 타입(요약정보, 사진, 비디오)" /> 
+     <meta name="twitter:title" content="콘텐츠 제목" /> 
+     <meta name="twitter:description" content="웹페이지 설명" /> 
+     <meta name="twitter:image" content="표시되는 이미지 " /> 
+     -->
+ 
+     <!-- 모바일 앱 미리보기 설정 모바일 앱이 존재하는 경우 앱으로 연결 시 노출 -->
+     <!--iOS-->
+     <!--
+     <meta property="al:ios:url" content=" ios 앱 URL" />
+     <meta property="al:ios:app-store-id" content="ios 앱스토어 ID" /> 
+     <meta property="al:ios:app-name" content="ios 앱 이름" /> 
+     -->
+     <!--Android-->
+     <!--
+     <meta property="al:android:url" content="안드로이드 앱 URL" />
+     <meta property="al:android:app-name" content="안드로이드 앱 이름" />
+     <meta property="al:android:package" content="안드로이드 패키지 이름" /> 
+     <meta property="al:web:url" content="안드로이드 앱 URL" />
+     -->
+ 
+ 
+    <title>이벤트 결과</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <!-- JS -->
+    <script src="https://kit.fontawesome.com/5c4a482ffe.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    
+
+    <!-- Chart : https://www.chartjs.org/docs/latest/getting-started/ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <!-- 데이터테이블JS -->
+    <script charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
+   
+    
+    
+    <!-- Excel Export : https://github.com/rainabba/jquery-table2excel-->
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+
+    <!-- 공통 라이브러리 -->
+    <script  src="js/util.js"></script>
+    <!-- 클릭 이벤트 -->
+    <script src="js/ck_event_dev.js"></script>
+    <!-- 화면 인테이스 -->
+    <script src="js/draw_event.js"></script>
+     <!-- 상수 정의 -->
+    <script src="js/const.js"></script>
+    <!-- AJAX 처리 인터페이스 -->
+    <script src="js/api.js"></script>
+
+    
+    <script>
+        $(function(){   
+            var isLogin = getCookie('login');
+            if (isLogin !== "logined"){
+                alert("로그인하세요.");
+                goToPage("index.html", "");
+            };
+        });
+    </script>
+</head>
+<body>
+    <div class="loading-container" id="loding_container">
+        <div class="loading"></div>
+        <div class="loading-text" id="loading_text">loading</div>
+    </div>
+    
+    <header  class="addit-bg-gradiant">
+        <div class="addit-gnb">
+            <div class="addit-inner addit-flex-inner">
+                <a href="index.html"><img class="addit-main-logo" src="img/menlogo.png" alt="멘테이모 로고"></a>
+                <a class="addit-btn-login" id="btn_logout" href="javascript:void(0);">로그아웃</a>
+            </div>
+        </div>
+        <!-- 배너 이미지 및 텍스트 -->
+        <div class="addit-inner addit-padding2">
+            <div class="addit-banner-inner-text">
+                <p>[관리자페이지]</p>
+                <h1 id="result_event_title"></h1>
+                <!--<p id="result_customer_name">고객사 명</p>-->
+            </div>
+        </div>
+    </header>
+
+    <section class="addit-wrap">
+
+        <div class="addit-inner addit-grid-6-flex addit-margin3">
+            <div class="addit-box-type-17">
+                총 이벤트 참여자 <span class="addit-sub-text addit-margin9" id="span_total_user">00</span>명
+            </div>
+            <div class="addit-customer-box">
+                <select class="addit-customer-list2" id="customer_event_list">
+                </select>
+            </div>
+        </div>
+        <!-- allchart -->
+        <div class="addit-all-chart-div" id="all_chart_div">
+            <!-- <div class="addit-all-chart-item">
+                <canvas id="chart_0"></canvas>
+            </div> -->
+        </div>
+        <!--window load-->
+        <!-- 이벤트 기간별 참여자수 -->
+        <div class="addit-data-grap-div">
+            <canvas id="data_chart"></canvas>
+        </div>
+	<div class="addit-inner addit-quiz-list-div" id="div_event_quiz_list">문제리스트</div>
+       
+       
+        <div class="addit-inner  addit-margin10">
+            <!-- 문제 유형에 따라 결과 확인 내용이 달라진다. 
+                1) 만족도 조사일 경우 (정답이 없다, 객관식/주관식 혼용)
+                2) 퀴즈일 경우 : 정답자 보기 
+                3) 인증샷 등만 있을 경우 (덕담 이벤트 등)
+            -->
+            <h2 class="addit-h2 addit-margin1">이벤트 참여자 명단</h2>
+            <div class="addit-margin8 div-result-button" id="div_result_button"></div>
+            <table class="addit-grid-4 addit-p" id="table_list" style="width:100%;">
+                <thead class="addit-bg-colot5" id="table_th">
+                     <!-- 공통 테이블 헤드 -->
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">사용자번호</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">참여날짜</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">이름</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">전화번호</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">이메일</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">주소</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">점수</th>
+
+                     <!--이벤트마다 달라리는 헤드 -->
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center" style="width:100px">사용자답변</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center" style="width:100px">유입경로</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">첨부파일</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">운영체제</th>
+                     <th class=" addit-padding1 addit-font-color5 addit-text-center">브라우저</th>
+                </thead>
+                <tbody id="table_td"><!-- 이벤트 참여자 나올 곳 -->
+                   
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 랜덤추첨 팝업 -->
+    <div class="result-popup" id="random_result_popup">
+        <div class="addit-result-popup-inner">
+            <div class="addit-grid-6-flex">
+                <h2 class="addit-h2">이벤트 랜덤 추첨기</h2>
+                <button class="addit-button-type9" id="btn_result_select_down"><img class="addit-icon-type-4" src="img/excel.png" alt="엑셀아이콘">당첨자명단 다운로드</button>
+            </div>
+            <div class="addit-flex-inner3 addit-margin8">
+                <input id="txt_random_count" class="addit-input-type4 addit-margin5" type="number" placeholder="추첨인원을 작성해주세요.">
+                <input id="txt_random_answer" class="addit-input-type4 addit-margin5" type="text" placeholder="추첨값을 작성해주세요.">
+                <button class="addit-button-type9" id="btn_result_select">추첨하기</button>
+            </div>
+                
+            <table class="addit-grid-4 addit-p addit-margin8" id="random_list_select">
+                <thead class="addit-bg-colot5">
+                    <tr>
+                        <th class="addit-padding1 addit-font-color5">번호</th>
+                        <th class="addit-padding1 addit-font-color5">이름</th>
+                        <th class="addit-padding1 addit-font-color5">전화번호</th>
+                        <th class="addit-padding1 addit-font-color5">주소</th>
+                        <th class="addit-padding1 addit-font-color5">사용자입력값</th>
+                    </tr>
+                </thead>
+                <tbody id="random_list_view">  <!-- 추첨하기 클릭시 뿌려질 곳 -->          
+                       <!-- 리스트 끝 -->
+                </tbody>
+                
+            </table>
+             
+        
+            <button class="addit-button-type9" id="btn_result_popup_close">닫기</button>
+        </div>      
+    </div>
+    <span class="random-answer-view" id="random_answer_view"></span>
+
+    <!--질문리스트 차트버튼 클릭시 그래프가 나타나는 팝업 -->
+    <div class="quiz-list-popup" id="quiz_list_popup">
+        <div class="quiz-list-popup-header" id="quiz_list_popup_drag">Click Drag</div>
+        <div class="addit-chart" id="chart_view" style="text-align: center;"> <!-- 차트가 나오는 div -->
+          <div style="display:inline-block; width:100%;">
+            <canvas id="chart_analyze"></canvas>
+          </div>
+        </div>
+        <button class="addit-button-type9" id="saveButton">저장하기</button>
+        <button class="addit-button-type9" id="quiz_list_popup_close">닫기</button>
+    </div>
+
+   
+
+    <!--질문리스트 클릭시 테이블가 나타나는 팝업 -->
+    <div class="quiz-text-list-popup" id="quiz_text_list_popup">
+        <h2 class="quiz-text-list-title" id="quiz_text_list_title"></h2>
+        <table class="addit-grid-4 addit-p" id="table_ans" style="width:100%;">
+            <thead class="addit-bg-colot5" id="table_ans_th">
+                 <!-- 공통 테이블 헤드 -->
+                 <th class=" addit-padding1 addit-font-color5 addit-text-center">항목</th>
+                 <th class=" addit-padding1 addit-font-color5 addit-text-center">참가인원</th>
+                 <th class=" addit-padding1 addit-font-color5 addit-text-center">백분율</th>
+            </thead>
+            <tbody id="table_ans_td"><!-- 이벤트 참여자 나올 곳 -->
+               
+            </tbody>
+        </table>
+        <!-- <ul class="addit-text" id="text_view">
+        </ul> -->
+        <button class="addit-button-type9" id="quiz_text_list_popup_close">닫기</button>
+    </div>
+
+    <!-- 인입률 보기 그래프 팝업 -->
+    <div class="addit-lending-popup" id="lending_popup">
+            <!-- 차트 canvas는 자체적으로 스타일을 줄 수 없다.(중앙정렬등)
+                차트를 위해 별도의 DIV를 감싸서 구현
+            -->
+            <div id="lending_chart" >
+                <div class="addit-chart-2" id="lending_chart_view" style="text-align: center;"> <!-- 차트가 나오는 div -->
+                  <div style="display:inline-block; width:100%;">
+                    <canvas id="chart_inpath"></canvas>
+                  </div>
+                
+                </div>
+                <table class="addit-grid-4 addit-p addit-margin8">
+                    <thead class="addit-bg-colot5">
+                        <tr>
+                            <th class="addit-padding1 addit-font-color5">naver</th>
+                            <th class="addit-padding1 addit-font-color5">instagram</th>
+                            <th class="addit-padding1 addit-font-color5">facebook</th>
+                            <th class="addit-padding1 addit-font-color5">URL직접 입력</th>
+                            <th class="addit-padding1 addit-font-color5">기타</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sns_lending_view"> <!-- 인입률 수치 나오는 곳 -->
+                    </tbody>
+                </table>
+            </div>
+        <button class="addit-button-type9" id="save2Button">저장하기</button>
+        <button class="addit-button-type9" id="lending_popup_close">닫기</button>
+    </div>
+    
+    <footer id="footer"></footer>
+
+    <script>
+        window.onload = function(){
+            
+            // draw_html('#header', HEADER_HTML); 헤어가 다름   
+            draw_html('#footer', FOOTER_HTML);   
+            draw_html('#login_popup', LOGIN_HTML); 
+         
+            
+            // 파라미터가 전달된 경우 수정 모드
+            var e_idx = decodeURI(decodeURIComponent($.urlParam("e_idx")));
+            if (!isEmpty(e_idx)){
+                // 이벤트 리스트 checkbox 출력
+                var params = {};
+                params.cmd = "load_event";
+                params.loadcount = MAX_Data_Per_Page_Count;
+                global_event_list_json = load_data(params);
+                draw_event_list_checkbox(global_event_list_json, '#customer_event_list', e_idx);
+               
+
+                // 이벤트 당첨자 랜덤 추첨
+                var params = {};
+                params.e_idx = e_idx;
+                params.loadcount = MAX_Data_Per_Page_Count;
+                params.cmd = "load_event_result";
+                global_event_result_json = load_data(params);
+                draw_result_button('#div_result_button');
+                // draw_event_result(global_event_result_json, '#result_td');
+                draw_result_tabledata(global_event_result_json, '#table_list', 'asc');
+                draw_event_list_chart(global_event_list_json, e_idx);
+                draw_event_data_chart(global_event_list_json, e_idx);
+                
+
+                Chart.defaults.font.size = 14;
+                inpathChart = new Chart($('#chart_inpath'), {
+                  type : 'pie',
+                  plugins : [ChartDataLabels]
+                });
+
+                analyzeChart = new Chart($('#chart_analyze'), {
+                  type : 'pie',
+                  plugins : [ChartDataLabels]
+                });
+
+
+                
+                // var quizlist = $('.addit-quiz-list'.length)
+                // for(var i = 0; i < quizlist; i++){
+                    
+                // }
+            }
+            // $("#loding_container").css('display','none');
+        };
+
+    </script>
+</body>
+</html>
